@@ -164,13 +164,7 @@ body {
     }
 }
 
-.timeline-bar {
-    width: 80%;
-    height: 2px;
-    background: linear-gradient(90deg, #8B0000, #DC2626, #8B0000);
-    margin: 1rem 0;
-    opacity: 0.8;
-}
+
 
 .live-countdown {
     display: flex;
