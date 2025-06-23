@@ -3,8 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gaza Crisis Timeline - Urgent Action Needed</title>
-    <meta name="description" content="Real-time data visualization of Gaza's humanitarian crisis. Every second counts - take action now.">
+    <!-- Primary Meta Tags -->
+    <title>Gaza Population Crisis Tracker - Real-Time Humanitarian Data</title>
+    <meta name="title" content="Gaza Population Crisis Tracker - Real-Time Humanitarian Data">
+    <meta name="description" content="Live tracking of Gaza's humanitarian crisis. At current rates, the entire population faces extinction in 68 years. See real-time casualties, infrastructure damage, and how to help.">
+    <meta name="keywords" content="Gaza, humanitarian crisis, Palestine, real-time data, casualties, aid, donations, population tracker">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="English">
+    <meta name="author" content="Tech for Palestine">
+    <link rel="canonical" href="https://gaza-crisis-tracker.replit.app">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://gaza-crisis-tracker.replit.app">
+    <meta property="og:title" content="Gaza's Population Crisis: 68 Years Until Extinction at Current Rate">
+    <meta property="og:description" content="Every 16 minutes, a life is lost. Track the humanitarian crisis in real-time and learn how your action can make a difference.">
+    <meta property="og:image" content="https://gaza-crisis-tracker.replit.app/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="Gaza Crisis Tracker">
+    <meta property="og:locale" content="en_US">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://gaza-crisis-tracker.replit.app">
+    <meta property="twitter:title" content="Gaza's Population Crisis: Real-Time Tracker">
+    <meta property="twitter:description" content="At current casualty rates, Gaza faces complete population loss in 68 years. See the data. Take action.">
+    <meta property="twitter:image" content="https://gaza-crisis-tracker.replit.app/twitter-image.jpg">
+    
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     
     <!-- Performance optimizations -->
@@ -52,6 +78,41 @@
             font-size: 1.2rem;
         }
     </style>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Gaza Population Crisis Tracker",
+      "description": "Real-time tracking of humanitarian crisis in Gaza with live statistics and ways to help",
+      "url": "https://gaza-crisis-tracker.replit.app",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Tech for Palestine",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://gaza-crisis-tracker.replit.app/favicon.ico"
+        }
+      },
+      "dateModified": "2025-06-23",
+      "mainEntity": {
+        "@type": "Dataset",
+        "name": "Gaza Humanitarian Crisis Data",
+        "description": "Real-time casualties and infrastructure damage data",
+        "url": "https://data.techforpalestine.org/api/v2/summary.json",
+        "includedInDataCatalog": {
+          "@type": "DataCatalog",
+          "name": "Tech for Palestine"
+        },
+        "distribution": {
+          "@type": "DataDownload",
+          "encodingFormat": "application/json",
+          "contentUrl": "https://data.techforpalestine.org/api/v2/summary.json"
+        }
+      }
+    }
+    </script>
     
     <link rel="stylesheet" href="styles.css">
 </head>

@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://gaza-crisis-tracker.replit.app/sitemap.xml

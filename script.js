@@ -457,23 +457,69 @@ class GazaCrisisApp {
 
     shareContent() {
         const url = window.location.href;
-        const text = 'Gaza faces extinction at current rates. See the real-time data and take action.';
-
+        const killed = this.data?.killed?.total || 0;
+        const dailyRate = this.dailyDeathRate || 0;
+        
+        // Dynamic message based on current data
+        const text = `Gaza faces extinction in 68 years at current rates. ${this.formatNumber(killed)} lives lost. See the real-time data and take action.`;
+        
         if (navigator.share) {
             navigator.share({
-                title: 'Gaza Crisis Timeline',
+                title: 'Gaza Population Crisis: Real-Time Tracker',
                 text: text,
                 url: url
             }).catch(console.warn);
         } else {
-            // Fallback: copy to clipboard
-            navigator.clipboard.writeText(`${text} ${url}`).then(() => {
-                this.showTemporaryMessage('Link copied to clipboard');
-            }).catch(() => {
-                // Final fallback: show URL
-                alert(`Share this link: ${url}`);
-            });
+            // Enhanced social sharing options
+            this.showSocialShareModal(text, url);
         }
+    }
+
+    showSocialShareModal(text, url) {
+        const modal = document.createElement('div');
+        modal.className = 'share-modal';
+        modal.innerHTML = `
+            <div class="share-modal-content">
+                <h3>Share Gaza Crisis Data</h3>
+                <div class="share-buttons">
+                    <button class="share-btn twitter" onclick="window.open('https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}&hashtags=Gaza,HumanitarianCrisis,TakeAction', '_blank')">
+                        Share on Twitter
+                    </button>
+                    <button class="share-btn facebook" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(text)}', '_blank')">
+                        Share on Facebook
+                    </button>
+                    <button class="share-btn linkedin" onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}&summary=${encodeURIComponent(text)}', '_blank')">
+                        Share on LinkedIn
+                    </button>
+                    <button class="share-btn copy" onclick="navigator.clipboard.writeText('${text} ${url}').then(() => { this.textContent = 'Copied!'; setTimeout(() => this.textContent = 'Copy Link', 2000); })">
+                        Copy Link
+                    </button>
+                </div>
+                <button class="close-modal" onclick="document.body.removeChild(this.parentElement.parentElement)">Close</button>
+            </div>
+        `;
+        
+        modal.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        `;
+        
+        document.body.appendChild(modal);
+        
+        // Close modal when clicking outside
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                document.body.removeChild(modal);
+            }
+        });
     }
 
 
