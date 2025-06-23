@@ -832,6 +832,88 @@ body {
     background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%);
 }
 
+/* Enhanced Social Sharing Modal */
+.share-modal-content {
+    background: var(--color-bg-secondary);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 2rem;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+}
+
+.share-modal-content h3 {
+    color: var(--color-text-primary);
+    margin-bottom: 1.5rem;
+    font-size: 1.3rem;
+}
+
+.share-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+}
+
+.share-btn {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: white;
+}
+
+.share-btn.twitter {
+    background: #1DA1F2;
+}
+
+.share-btn.twitter:hover {
+    background: #0d8bd9;
+}
+
+.share-btn.facebook {
+    background: #4267B2;
+}
+
+.share-btn.facebook:hover {
+    background: #365899;
+}
+
+.share-btn.linkedin {
+    background: #0077B5;
+}
+
+.share-btn.linkedin:hover {
+    background: #005885;
+}
+
+.share-btn.copy {
+    background: var(--color-accent-green);
+}
+
+.share-btn.copy:hover {
+    background: #00b359;
+}
+
+.close-modal {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: var(--color-text-secondary);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.close-modal:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--color-text-primary);
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .time-remaining {
