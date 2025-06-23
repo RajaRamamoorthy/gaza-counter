@@ -210,6 +210,18 @@ class GazaCrisisApp {
         if (populationBar) {
             populationBar.style.width = `${percentageLost}%`;
         }
+        
+        // Update days since October 7th
+        this.updateDaysSinceOctober();
+    }
+
+    updateDaysSinceOctober() {
+        const october7th = new Date('2023-10-07');
+        const today = new Date();
+        const timeDiff = today.getTime() - october7th.getTime();
+        const daysDiff = Math.floor(timeDiff / (1000 * 3600 * 24));
+        
+        this.updateElement('days-since-october', daysDiff);
     }
 
     updateImpactCalculation() {

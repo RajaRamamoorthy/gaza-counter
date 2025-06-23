@@ -203,10 +203,13 @@ body {
 }
 
 .countdown-segment .label {
-    font-size: 0.3em;
-    text-transform: uppercase;
-    opacity: 0.7;
-    letter-spacing: 0.1em;
+    font-size: 0.35em;
+    text-transform: lowercase;
+    opacity: 0.6;
+    letter-spacing: 0.05em;
+    color: #9CA3AF;
+    font-weight: 300;
+    margin-top: 0.2em;
 }
 
 .separator {
@@ -672,6 +675,160 @@ body {
 
 
 
+/* Context Section */
+.context-section {
+    padding: 2.5rem 0;
+    background: linear-gradient(180deg, rgba(10, 10, 10, 0.95) 0%, rgba(20, 20, 20, 0.98) 100%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.context-intro {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #D1D5DB;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+    font-weight: 400;
+    opacity: 0.9;
+}
+
+/* Enhanced Infrastructure Section */
+.infrastructure-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.infrastructure-card {
+    background: var(--color-bg-secondary);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.infrastructure-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(255, 51, 51, 0.15);
+    border-color: rgba(220, 38, 38, 0.3);
+}
+
+.infrastructure-icon {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(220, 38, 38, 0.1);
+    color: var(--color-accent-red);
+}
+
+.infrastructure-number {
+    display: block;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-accent-red);
+    font-family: var(--font-mono);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.05em;
+}
+
+.infrastructure-label {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    font-weight: 500;
+}
+
+/* Transition Section */
+.transition-section {
+    padding: 4rem 0;
+    background: linear-gradient(180deg, rgba(10, 10, 10, 0.98) 0%, rgba(0, 40, 20, 0.95) 100%);
+    position: relative;
+}
+
+.transition-section::before,
+.transition-section::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%);
+}
+
+.transition-section::before {
+    top: 0;
+}
+
+.transition-section::after {
+    bottom: 0;
+}
+
+.transition-message {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.transition-message p {
+    font-size: 1.3rem;
+    line-height: 1.6;
+    color: #F3F4F6;
+    font-weight: 400;
+    font-style: italic;
+    opacity: 0.9;
+}
+
+/* Enhanced Population Section */
+.population-loss-section {
+    background: var(--color-bg-secondary);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 3rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.population-loss-text {
+    font-size: 1.1rem;
+    line-height: 1.5;
+    color: var(--color-text-primary);
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.population-loss-text span {
+    font-weight: 700;
+    color: var(--color-accent-red);
+}
+
+/* Section Spacing Improvements */
+.section-padding {
+    padding: 4rem 0;
+}
+
+#casualty-tracker {
+    position: relative;
+}
+
+#casualty-tracker::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%);
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .time-remaining {
@@ -735,6 +892,7 @@ body {
     
     .live-countdown {
         font-size: clamp(0.9rem, 3vw, 1.4rem);
+        gap: 0.5rem;
     }
     
     .stats-grid {
@@ -743,19 +901,52 @@ body {
     
     .stat-item {
         padding: 1rem;
+        min-height: 44px;
     }
     
     .infrastructure-grid {
         grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .infrastructure-card {
+        min-height: 44px;
+        padding: 1rem;
     }
     
     .population-loss-section {
-        padding: 0.8rem;
-        margin-bottom: 1.5rem;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
     }
     
     .population-loss-text {
         font-size: 1rem;
+        line-height: 1.4;
+    }
+    
+    .context-intro {
+        font-size: 1rem;
+        padding: 0 1rem;
+    }
+    
+    .transition-message p {
+        font-size: 1.1rem;
+        padding: 0 1rem;
+    }
+    
+    .donate-button {
+        width: 100%;
+        min-height: 44px;
+        font-size: 1rem;
+    }
+    
+    .infrastructure-icon {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .infrastructure-number {
+        font-size: 1.5rem;
     }
 }
 
