@@ -217,37 +217,90 @@ class GazaCrisisApp {
         // Calculate extinction timeline
         const remainingPopulation = this.GAZA_POPULATION - totalKilled;
         const daysUntilExtinction = Math.floor(remainingPopulation / dailyDeathRate);
-
-        this.updateCountdownDisplay(daysUntilExtinction);
         
-        // Update countdown every minute
+        // Store the target end time for countdown
+        this.extinctionDate = new Date(Date.now() + (daysUntilExtinction * 24 * 60 * 60 * 1000));
+        
+        // Update the time remaining statement
+        this.updateTimeRemainingDisplay(daysUntilExtinction);
+        
+        // Start real-time countdown
         if (this.countdownInterval) {
             clearInterval(this.countdownInterval);
         }
         
         this.countdownInterval = setInterval(() => {
-            this.updateCountdownDisplay(daysUntilExtinction);
-        }, 60000); // Update every minute
+            this.updateLiveCountdown();
+        }, 1000); // Update every second
+        
+        // Initial update
+        this.updateLiveCountdown();
     }
 
-    updateCountdownDisplay(totalDays) {
+    updateTimeRemainingDisplay(totalDays) {
         const years = Math.floor(totalDays / 365);
         const remainingDaysAfterYears = totalDays % 365;
         const months = Math.floor(remainingDaysAfterYears / 30);
         const days = remainingDaysAfterYears % 30;
-        const hours = Math.floor((Date.now() % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((Date.now() % (1000 * 60 * 60)) / (1000 * 60));
 
-        const countdownTimer = document.getElementById('countdown-timer');
-        if (countdownTimer) {
-            const formattedTime = `${years.toString().padStart(2, '0')}:${months.toString().padStart(2, '0')}:${days.toString().padStart(2, '0')}:${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
-            countdownTimer.textContent = formattedTime;
-            countdownTimer.classList.remove('loading');
+        const timeRemainingElement = document.getElementById('time-remaining');
+        if (timeRemainingElement) {
+            let timeStatement = "In ";
+            
+            if (years > 0) {
+                timeStatement += `${years} ${years === 1 ? 'year' : 'years'}`;
+                if (months > 0 || days > 0) timeStatement += ", ";
+            }
+            
+            if (months > 0 || (years > 0 && days > 0)) {
+                timeStatement += `${months} ${months === 1 ? 'month' : 'months'}`;
+                if (days > 0) timeStatement += ", ";
+            }
+            
+            if (days > 0 || (years === 0 && months === 0)) {
+                timeStatement += `${days} ${days === 1 ? 'day' : 'days'}`;
+            }
+
+            timeRemainingElement.textContent = timeStatement;
+            timeRemainingElement.classList.remove('loading');
             
             // Update ARIA label for accessibility
-            countdownTimer.setAttribute('aria-label', 
-                `${years} years, ${months} months, ${days} days, ${hours} hours, ${minutes} minutes until estimated population extinction at current rate`
+            timeRemainingElement.setAttribute('aria-label', 
+                `${timeStatement} until estimated population extinction at current rate`
             );
+        }
+    }
+
+    updateLiveCountdown() {
+        if (!this.extinctionDate) return;
+
+        const now = new Date().getTime();
+        const timeLeft = this.extinctionDate.getTime() - now;
+
+        if (timeLeft <= 0) {
+            const liveCountdownElement = document.getElementById('live-countdown');
+            if (liveCountdownElement) {
+                liveCountdownElement.textContent = "000 days : 00 hours : 00 minutes : 00 seconds";
+            }
+            return;
+        }
+
+        const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+        const liveCountdownElement = document.getElementById('live-countdown');
+        if (liveCountdownElement) {
+            const formattedTime = `${days.toString().padStart(3, '0')} days : ${hours.toString().padStart(2, '0')} hours : ${minutes.toString().padStart(2, '0')} minutes : ${seconds.toString().padStart(2, '0')} seconds`;
+            liveCountdownElement.textContent = formattedTime;
+            
+            // Update ARIA label for accessibility (less frequently to avoid spam)
+            if (seconds % 10 === 0) {
+                liveCountdownElement.setAttribute('aria-label', 
+                    `${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds remaining`
+                );
+            }
         }
     }
 
@@ -377,16 +430,24 @@ class GazaCrisisApp {
     toggleAnimations() {
         this.animationsPaused = !this.animationsPaused;
         const pauseButton = document.getElementById('pause-animations');
-        const countdownTimer = document.querySelector('.countdown-timer');
+        const timeRemaining = document.querySelector('.time-remaining');
         
         if (this.animationsPaused) {
             pauseButton.textContent = '▶ Resume Animations';
             document.body.style.setProperty('--animation-play-state', 'paused');
-            if (countdownTimer) countdownTimer.classList.add('paused');
+            if (timeRemaining) timeRemaining.classList.add('paused');
+            // Stop the live countdown when animations are paused
+            if (this.countdownInterval) {
+                clearInterval(this.countdownInterval);
+            }
         } else {
             pauseButton.textContent = '⏸ Pause Animations';
             document.body.style.setProperty('--animation-play-state', 'running');
-            if (countdownTimer) countdownTimer.classList.remove('paused');
+            if (timeRemaining) timeRemaining.classList.remove('paused');
+            // Restart the live countdown when animations resume
+            this.countdownInterval = setInterval(() => {
+                this.updateLiveCountdown();
+            }, 1000);
         }
     }
 

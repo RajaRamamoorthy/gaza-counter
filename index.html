@@ -58,8 +58,13 @@
     <!-- Section 1: Extinction Timeline -->
     <section id="extinction-timeline" class="countdown-container">
         <div class="countdown-content">
-            <div id="countdown-timer" class="countdown-timer loading" aria-live="polite" role="timer">
-                Loading data...
+            <div class="countdown-display">
+                <div id="time-remaining" class="time-remaining loading" aria-live="polite">
+                    Loading data...
+                </div>
+                <div id="live-countdown" class="live-countdown" aria-live="polite" role="timer">
+                    --- days : -- hours : -- minutes : -- seconds
+                </div>
             </div>
             <p class="countdown-label">Until Gaza ceases to exist at current rate</p>
             <p id="death-rate-info" class="death-rate-info">Calculating death rate...</p>
