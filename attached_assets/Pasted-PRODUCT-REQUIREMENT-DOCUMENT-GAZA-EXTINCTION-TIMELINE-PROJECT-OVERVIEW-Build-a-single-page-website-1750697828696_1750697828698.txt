@@ -1,0 +1,156 @@
+PRODUCT REQUIREMENT DOCUMENT - GAZA EXTINCTION TIMELINE
+PROJECT OVERVIEW
+Build a single-page website that viscerally communicates the urgency of the humanitarian crisis in Gaza through data visualization. The page should create an emotional impact while maintaining dignity and respect for the victims. This is not entertainment - it's a wake-up call.
+TECHNICAL REQUIREMENTS
+
+Vanilla JavaScript, HTML5, CSS3 (no heavy frameworks)
+Mobile-first responsive design
+Core Web Vitals optimized: LCP < 2.5s, FIP < 100ms, CLS < 0.1
+API: Tech for Palestine (https://data.techforpalestine.org/api/v3/summary_latest.json)
+Minimal dependencies, maximum performance
+Progressive enhancement approach
+
+SECTION 1: EXTINCTION TIMELINE (Landing View)
+Purpose
+Show visitors immediately that Gaza faces complete annihilation at current rates.
+Design Requirements
+
+Full viewport height opening section
+Dominant element: Large countdown timer showing estimated time until total population loss
+Supporting visual: Calendar or timeline showing key extinction milestones
+Color palette: Dark backgrounds (near black), red accents for urgency, white text
+Typography: Large, bold sans-serif for numbers, readable body text
+
+Calculation Logic
+Based on Tech for Palestine API data:
+- Calculate daily death rate average from last 30 days
+- Total Gaza population: ~2.3 million (2024 estimate)
+- Current deaths from API
+- Remaining population = Total - Current deaths
+- Days until extinction = Remaining population / Daily death rate
+- Display as: YEARS : MONTHS : DAYS : HOURS : MINUTES
+Visual Elements
+
+Ticking countdown with smooth transitions
+Subtle pulse animation on numbers
+Below counter: "Until Gaza ceases to exist at current rate"
+Small text showing calculation basis: "Based on [X] deaths per day average"
+
+User Experience
+
+No autoplay sounds
+Smooth scroll hint indicator at bottom
+Numbers should update in real-time but not distract
+
+SECTION 2: LIVE CASUALTY TRACKER
+Purpose
+Ground the abstract countdown in real human cost.
+Layout Structure
+Two-column layout on desktop, stacked on mobile:
+
+LEFT: Current Reality
+- Total killed: [NUMBER]
+- Children killed: [NUMBER] 
+- Women killed: [NUMBER]
+- Injured: [NUMBER]
+- Missing: [NUMBER]
+
+RIGHT: What Remains
+- Original population: 2.3 million
+- Current population: [CALCULATED]
+- Percentage lost: [X]%
+- Visual progress bar showing depletion
+Design Specifications
+
+Numbers animate up from 0 on scroll into view (once only)
+Use monospace font for numbers to prevent layout shift
+Red color intensity increases with higher numbers
+Each statistic has brief context (e.g., "40% of all casualties")
+
+Infrastructure Damage Subsection
+
+Hospitals destroyed: [X] of [Total]
+Schools destroyed: [X] of [Total]
+Mosques destroyed: [X] of [Total]
+Homes destroyed: [X] affecting [Y] people
+
+Data Attribution
+
+Clear "Data from Tech for Palestine" with timestamp
+"Last updated: [TIME] ago" with auto-refresh every 5 minutes
+
+SECTION 3: TAKE ACTION
+Purpose
+Convert awareness into action with clear paths to help.
+Headline
+"Every donation, every voice, every action slows the countdown"
+Structure
+Three action categories with 2-3 organizations each:
+Direct Humanitarian Aid
+
+Organization name, brief description, impact metric
+Clear "DONATE" button
+Show how much could help (e.g., "$50 provides medical supplies for 10 people")
+
+Medical Support
+
+Focus on organizations providing medical care
+Emphasis on children and emergency care
+
+Advocacy & Awareness
+
+Organizations working on political solutions
+Share/spread awareness tools
+
+Design Approach
+
+White background section for hope/action contrast
+Green accent color for action buttons
+Quick-loading organization logos
+No external scripts/trackers that slow performance
+
+Impact Visualization
+Small counter showing: "If 10,000 people donate $50 each, we could provide aid for [X] months"
+GLOBAL DESIGN PRINCIPLES
+Tone & Messaging
+
+Urgent but not sensationalist
+Factual with emotional resonance
+Respectful to victims and survivors
+Action-oriented without false hope
+No graphic imagery, focus on data
+
+Performance Optimizations
+
+Lazy load images below fold
+Use CSS animations not JavaScript where possible
+Debounce scroll events
+Preconnect to API domain
+Cache API responses for 5 minutes
+Inline critical CSS
+
+Accessibility
+
+ARIA labels for all interactive elements
+Keyboard navigation support
+Screen reader friendly number updates
+Sufficient color contrast (WCAG AA minimum)
+Pause button for animations
+
+Mobile Considerations
+
+Touch-friendly tap targets (minimum 44x44px)
+Reduced animation on low-power devices
+Condensed statistics layout
+Swipeable sections on mobile
+
+ERROR HANDLING
+
+Fallback to cached data if API fails
+Clear error messages if data cannot be loaded
+Never show broken/empty states
+
+BROWSER SUPPORT
+Modern browsers (last 2 versions), graceful degradation for older ones.
+SUMMARY
+Create a powerful, performance-optimized single page that makes the Gaza crisis impossible to ignore through data-driven storytelling. Every design decision should serve the goal of driving awareness and action while respecting the gravity of the situation.
