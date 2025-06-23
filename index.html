@@ -72,17 +72,17 @@
                 <div id="live-countdown" class="live-countdown" aria-live="polite" role="timer">
                     <span class="countdown-segment">
                         <span class="number">--</span>
-                        <span class="label">hrs</span>
+                        <span class="label">hours</span>
                     </span>
-                    <span class="separator blink">:</span>
+                    <span class="separator">:</span>
                     <span class="countdown-segment">
                         <span class="number">--</span>
-                        <span class="label">min</span>
+                        <span class="label">minutes</span>
                     </span>
-                    <span class="separator blink">:</span>
+                    <span class="separator">:</span>
                     <span class="countdown-segment">
                         <span class="number">--</span>
-                        <span class="label">sec</span>
+                        <span class="label">seconds</span>
                     </span>
                 </div>
             </div>
@@ -101,6 +101,13 @@
 
     </section>
 
+    <!-- Context Introduction -->
+    <section class="context-section">
+        <div class="container">
+            <p class="context-intro">Gaza, home to 2.3 million people in just 365 square kilometers, is experiencing unprecedented devastation. Half the population are children.</p>
+        </div>
+    </section>
+
     <!-- Section 2: Live Casualty Tracker -->
     <section id="casualty-tracker" class="section-padding">
         <div class="container">
@@ -109,7 +116,8 @@
             <!-- Population Loss Progress Bar -->
             <div class="population-loss-section">
                 <div class="population-loss-text">
-                    Since October 7th, 2023, we've lost <span id="population-lost-percentage">0%</span> of the population
+                    In <span id="days-since-october">0</span> days since October 7th, 2023:<br>
+                    <span id="population-lost-percentage">0%</span> of Gaza's 2.3 million people have been killed
                 </div>
                 <div class="population-bar">
                     <div class="population-lost" id="population-bar"></div>
@@ -149,19 +157,39 @@
             <div class="infrastructure-section">
                 <h3 class="subsection-title">Infrastructure Destroyed</h3>
                 <div class="infrastructure-grid">
-                    <div class="infrastructure-item">
+                    <div class="infrastructure-card">
+                        <div class="infrastructure-icon hospital-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M19 3H5c-1.1 0-1.99.9-1.99 2L3 19c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-1 11h-4v4h-4v-4H6v-4h4V6h4v4h4v4z"/>
+                            </svg>
+                        </div>
                         <span class="infrastructure-number" id="hospitals-destroyed">0</span>
                         <span class="infrastructure-label">Hospitals Destroyed</span>
                     </div>
-                    <div class="infrastructure-item">
+                    <div class="infrastructure-card">
+                        <div class="infrastructure-icon school-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/>
+                            </svg>
+                        </div>
                         <span class="infrastructure-number" id="schools-destroyed">0</span>
                         <span class="infrastructure-label">Schools Destroyed</span>
                     </div>
-                    <div class="infrastructure-item">
+                    <div class="infrastructure-card">
+                        <div class="infrastructure-icon mosque-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 1L8 5h8l-4-4zM4 21h16v-8H4v8zm8-19c-4.97 0-9 4.03-9 9v7h18v-7c0-4.97-4.03-9-9-9z"/>
+                            </svg>
+                        </div>
                         <span class="infrastructure-number" id="mosques-destroyed">0</span>
                         <span class="infrastructure-label">Mosques Destroyed</span>
                     </div>
-                    <div class="infrastructure-item">
+                    <div class="infrastructure-card">
+                        <div class="infrastructure-icon home-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                            </svg>
+                        </div>
                         <span class="infrastructure-number" id="homes-destroyed">0</span>
                         <span class="infrastructure-label">Homes Destroyed</span>
                     </div>
@@ -178,6 +206,15 @@
                     </svg>
                     Refresh
                 </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Emotional Transition -->
+    <section class="transition-section">
+        <div class="container">
+            <div class="transition-message">
+                <p>These aren't just numbers. Each represents a life, a family, a future lost.</p>
             </div>
         </div>
     </section>
