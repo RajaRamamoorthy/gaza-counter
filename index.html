@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gaza Crisis Timeline - Urgent Action Needed</title>
+    <meta name="description" content="Real-time data visualization of Gaza's humanitarian crisis. Every second counts - take action now.">
+    
+    <!-- Performance optimizations -->
+    <link rel="preconnect" href="https://data.techforpalestine.org">
+    <link rel="dns-prefetch" href="https://data.techforpalestine.org">
+    
+    <!-- Critical CSS inlined for performance -->
+    <style>
+        /* Critical above-the-fold styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #0a0a0a;
+            color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .countdown-container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+        }
+        
+        .countdown-timer {
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+            font-size: clamp(2rem, 8vw, 6rem);
+            font-weight: 700;
+            color: #ff3333;
+            margin-bottom: 1rem;
+            letter-spacing: 0.1em;
+        }
+        
+        .loading {
+            color: #666;
+            font-size: 1.2rem;
+        }
+    </style>
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Section 1: Extinction Timeline -->
+    <section id="extinction-timeline" class="countdown-container">
+        <div class="countdown-content">
+            <div id="countdown-timer" class="countdown-timer loading" aria-live="polite" role="timer">
+                Loading data...
+            </div>
+            <p class="countdown-label">Until Gaza ceases to exist at current rate</p>
+            <p id="death-rate-info" class="death-rate-info">Calculating death rate...</p>
+        </div>
+        <div class="scroll-indicator" aria-hidden="true">
+            <div class="scroll-arrow"></div>
+        </div>
+    </section>
+
+    <!-- Section 2: Live Casualty Tracker -->
+    <section id="casualty-tracker" class="section-padding">
+        <div class="container">
+            <h2 class="section-title">Current Reality</h2>
+            
+            <div class="stats-grid">
+                <div class="stats-column">
+                    <h3 class="column-title">Human Cost</h3>
+                    <div class="stat-item">
+                        <span class="stat-number" id="total-killed" data-target="0">0</span>
+                        <span class="stat-label">Total Killed</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="children-killed" data-target="0">0</span>
+                        <span class="stat-label">Children Killed</span>
+                        <span class="stat-context" id="children-percentage"></span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="women-killed" data-target="0">0</span>
+                        <span class="stat-label">Women Killed</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="injured" data-target="0">0</span>
+                        <span class="stat-label">Injured</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="missing" data-target="0">0</span>
+                        <span class="stat-label">Missing</span>
+                    </div>
+                </div>
+
+                <div class="stats-column">
+                    <h3 class="column-title">What Remains</h3>
+                    <div class="population-info">
+                        <div class="stat-item">
+                            <span class="stat-number">2,300,000</span>
+                            <span class="stat-label">Original Population</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="current-population">2,300,000</span>
+                            <span class="stat-label">Current Population</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="percentage-lost">0%</span>
+                            <span class="stat-label">Population Lost</span>
+                        </div>
+                        <div class="population-bar">
+                            <div class="population-remaining" id="population-bar"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Infrastructure Damage -->
+            <div class="infrastructure-section">
+                <h3 class="subsection-title">Infrastructure Destroyed</h3>
+                <div class="infrastructure-grid">
+                    <div class="infrastructure-item">
+                        <span class="infrastructure-number" id="hospitals-destroyed">0</span>
+                        <span class="infrastructure-label">Hospitals Destroyed</span>
+                    </div>
+                    <div class="infrastructure-item">
+                        <span class="infrastructure-number" id="schools-destroyed">0</span>
+                        <span class="infrastructure-label">Schools Destroyed</span>
+                    </div>
+                    <div class="infrastructure-item">
+                        <span class="infrastructure-number" id="mosques-destroyed">0</span>
+                        <span class="infrastructure-label">Mosques Destroyed</span>
+                    </div>
+                    <div class="infrastructure-item">
+                        <span class="infrastructure-number" id="homes-destroyed">0</span>
+                        <span class="infrastructure-label">Homes Destroyed</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Attribution -->
+            <div class="data-attribution">
+                <p>Data from <a href="https://techforpalestine.org" target="_blank" rel="noopener">Tech for Palestine</a></p>
+                <p id="last-updated">Last updated: Loading...</p>
+                <button id="refresh-data" class="refresh-button" aria-label="Refresh data">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+                    </svg>
+                    Refresh
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Take Action -->
+    <section id="take-action" class="action-section">
+        <div class="container">
+            <h2 class="section-title action-title">Every donation, every voice, every action slows the countdown</h2>
+            
+            <div class="action-categories">
+                <!-- Direct Humanitarian Aid -->
+                <div class="action-category">
+                    <h3 class="category-title">Direct Humanitarian Aid</h3>
+                    <div class="organization">
+                        <h4 class="org-name">UNRWA</h4>
+                        <p class="org-description">Provides essential services to Palestinian refugees including food, healthcare, and education.</p>
+                        <p class="impact-metric">$50 provides emergency food for a family of 5 for one week</p>
+                        <a href="https://www.unrwa.org/donate" target="_blank" rel="noopener" class="donate-button">
+                            DONATE NOW
+                        </a>
+                    </div>
+                    <div class="organization">
+                        <h4 class="org-name">Islamic Relief</h4>
+                        <p class="org-description">Delivers emergency aid including clean water, medical supplies, and shelter materials.</p>
+                        <p class="impact-metric">$100 provides clean water for 20 people for one month</p>
+                        <a href="https://www.islamic-relief.org/palestine-emergency-appeal/" target="_blank" rel="noopener" class="donate-button">
+                            DONATE NOW
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Medical Support -->
+                <div class="action-category">
+                    <h3 class="category-title">Medical Support</h3>
+                    <div class="organization">
+                        <h4 class="org-name">Palestine Children's Relief Fund</h4>
+                        <p class="org-description">Provides specialized medical care for Palestinian children and emergency medical supplies.</p>
+                        <p class="impact-metric">$75 covers medical supplies for 15 children</p>
+                        <a href="https://www.pcrf.net/donate" target="_blank" rel="noopener" class="donate-button">
+                            DONATE NOW
+                        </a>
+                    </div>
+                    <div class="organization">
+                        <h4 class="org-name">Doctors Without Borders</h4>
+                        <p class="org-description">Provides emergency medical care and surgical services in Gaza.</p>
+                        <p class="impact-metric">$200 funds emergency medical care for 10 patients</p>
+                        <a href="https://www.doctorswithoutborders.org/what-we-do/countries/palestine" target="_blank" rel="noopener" class="donate-button">
+                            DONATE NOW
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Advocacy & Awareness -->
+                <div class="action-category">
+                    <h3 class="category-title">Advocacy & Awareness</h3>
+                    <div class="organization">
+                        <h4 class="org-name">Jewish Voice for Peace</h4>
+                        <p class="org-description">Advocates for Palestinian rights and works toward ending the occupation.</p>
+                        <p class="impact-metric">Your voice amplifies calls for immediate ceasefire</p>
+                        <a href="https://www.jewishvoiceforpeace.org/take-action/" target="_blank" rel="noopener" class="donate-button">
+                            TAKE ACTION
+                        </a>
+                    </div>
+                    <div class="organization">
+                        <h4 class="org-name">Share This Page</h4>
+                        <p class="org-description">Spread awareness by sharing this data with your network.</p>
+                        <p class="impact-metric">Every share reaches new people who can help</p>
+                        <button id="share-button" class="donate-button share-btn">
+                            SHARE NOW
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Impact Visualization -->
+            <div class="impact-visualization">
+                <p class="impact-text">
+                    If 10,000 people donate $50 each, we could provide emergency aid for 
+                    <span id="aid-duration" class="impact-number">calculating...</span> months
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="loading-spinner"></div>
+        <p>Loading latest data...</p>
+    </div>
+
+    <!-- Error Message -->
+    <div id="error-message" class="error-message" role="alert" aria-live="assertive">
+        <p>Unable to load latest data. Showing cached information.</p>
+        <button id="retry-button" class="retry-button">Retry</button>
+    </div>
+
+    <!-- Accessibility Controls -->
+    <div class="accessibility-controls">
+        <button id="pause-animations" class="accessibility-button" aria-label="Pause animations">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+            </svg>
+            Pause Animations
+        </button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
