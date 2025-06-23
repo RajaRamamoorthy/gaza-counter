@@ -64,14 +64,6 @@
         </div>
         
         <div class="countdown-content">
-            <div class="crisis-status">
-                <span class="critical-badge">CRITICAL STATUS</span>
-            </div>
-            
-            <div class="warning-header">
-                <h1 class="warning-text">WARNING: EXTINCTION TIMELINE</h1>
-            </div>
-            
             <div class="countdown-display">
                 <div id="time-remaining" class="time-remaining loading" aria-live="polite">
                     Loading data...
@@ -99,11 +91,11 @@
                 <p class="countdown-label">Until Gaza ceases to exist at current rate</p>
                 <p id="death-rate-info" class="death-rate-info">Calculating death rate...</p>
                 <p id="lives-lost-counter" class="lives-lost">Lives lost since you arrived: <span id="lives-count">0</span></p>
+                
+                <div class="scroll-indicator" aria-hidden="true">
+                    <div class="scroll-arrow"></div>
+                </div>
             </div>
-        </div>
-        
-        <div class="scroll-indicator" aria-hidden="true">
-            <div class="scroll-arrow"></div>
         </div>
         
 
@@ -135,18 +127,6 @@
                         <span class="stat-number" id="children-killed" data-target="0">0</span>
                         <span class="stat-label">Children Killed</span>
                         <span class="stat-context" id="children-percentage"></span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number" id="women-killed" data-target="0">0</span>
-                        <span class="stat-label">Women Killed</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number" id="injured" data-target="0">0</span>
-                        <span class="stat-label">Injured</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number" id="missing" data-target="0">0</span>
-                        <span class="stat-label">Missing</span>
                     </div>
                 </div>
 
@@ -272,13 +252,7 @@
                 </div>
             </div>
 
-            <!-- Impact Visualization -->
-            <div class="impact-visualization">
-                <p class="impact-text">
-                    If 10,000 people donate $50 each, we could provide emergency aid for 
-                    <span id="aid-duration" class="impact-number">calculating...</span> months
-                </p>
-            </div>
+
         </div>
     </section>
 
@@ -294,15 +268,7 @@
         <button id="retry-button" class="retry-button">Retry</button>
     </div>
 
-    <!-- Accessibility Controls -->
-    <div class="accessibility-controls">
-        <button id="pause-animations" class="accessibility-button" aria-label="Pause animations">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
-            </svg>
-            Pause Animations
-        </button>
-    </div>
+
 
     <script src="script.js"></script>
 </body>
