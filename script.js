@@ -423,24 +423,10 @@ class GazaCrisisApp {
 
 
 
-        // Retry button
-        const retryButton = document.getElementById('retry-button');
-        if (retryButton) {
-            retryButton.addEventListener('click', async () => {
-                this.hideError();
-                await this.loadData();
-            });
-        }
-
-        // Error message auto-hide
-        setTimeout(() => {
-            this.hideError();
-        }, 10000);
-
         // Keyboard navigation
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
-                this.hideError();
+                // Reserved for future keyboard shortcuts
             }
         });
     }
@@ -513,18 +499,12 @@ class GazaCrisisApp {
     }
 
     showError(message) {
-        const errorElement = document.getElementById('error-message');
-        if (errorElement) {
-            errorElement.querySelector('p').textContent = message;
-            errorElement.classList.add('show');
-        }
+        // Error message UI removed - log to console instead
+        console.warn('Error:', message);
     }
 
     hideError() {
-        const errorElement = document.getElementById('error-message');
-        if (errorElement) {
-            errorElement.classList.remove('show');
-        }
+        // Error message UI removed - no action needed
     }
 
     showTemporaryMessage(message) {
@@ -632,7 +612,7 @@ window.addEventListener('online', async () => {
 
 window.addEventListener('offline', () => {
     if (window.gazaCrisisApp) {
-        window.gazaCrisisApp.showError('Connection lost - using cached data');
+        console.warn('Connection lost - using cached data');
     }
 });
 
