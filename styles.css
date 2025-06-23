@@ -418,29 +418,54 @@ body {
     margin-top: 0.25rem;
 }
 
-/* Population Visualization */
-.population-info {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+/* Population Loss Section */
+.population-loss-section {
+    margin-bottom: 3rem;
+    text-align: center;
+    padding: 1.5rem;
+    background: rgba(139, 0, 0, 0.1);
+    border-radius: 8px;
+    border: 1px solid rgba(220, 38, 38, 0.3);
+}
+
+.population-loss-text {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: 1rem;
+}
+
+.population-loss-text #population-lost-percentage {
+    font-family: var(--font-mono);
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--color-accent-red);
 }
 
 .population-bar {
     width: 100%;
-    height: 20px;
-    background: var(--color-bg-secondary);
-    border-radius: 10px;
+    height: 24px;
+    background: linear-gradient(90deg, var(--color-accent-green), #ffcc00, #ff6600, var(--color-accent-red));
+    border-radius: 12px;
     overflow: hidden;
-    margin-top: 1rem;
-    border: 2px solid var(--color-accent-red);
+    border: 2px solid rgba(220, 38, 38, 0.4);
+    position: relative;
 }
 
-.population-remaining {
+.population-lost {
     height: 100%;
-    background: linear-gradient(90deg, var(--color-accent-green), var(--color-accent-red));
-    width: 100%;
+    background: var(--color-accent-red);
+    width: 0%;
     transition: width 2s ease-out;
-    border-radius: 8px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(220, 38, 38, 0.4);
+}
+
+/* Population Info (simplified) */
+.population-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 }
 
 /* Infrastructure Section */

@@ -198,15 +198,17 @@ class GazaCrisisApp {
         
         const currentPopulation = this.GAZA_POPULATION - totalKilled - missing;
         const percentageLost = ((totalKilled + missing) / this.GAZA_POPULATION * 100).toFixed(2);
-        const percentageRemaining = (currentPopulation / this.GAZA_POPULATION * 100);
 
+        // Update current population display
         this.updateElement('current-population', this.formatNumber(currentPopulation));
-        this.updateElement('percentage-lost', `${percentageLost}%`);
-
-        // Update population bar
+        
+        // Update population loss percentage and bar
+        this.updateElement('population-lost-percentage', `${percentageLost}%`);
+        
+        // Update population loss bar (shows percentage lost, not remaining)
         const populationBar = document.getElementById('population-bar');
         if (populationBar) {
-            populationBar.style.width = `${percentageRemaining}%`;
+            populationBar.style.width = `${percentageLost}%`;
         }
     }
 
