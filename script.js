@@ -200,11 +200,10 @@ class GazaCrisisApp {
     startCountdown() {
         if (!this.data) return;
 
-        const casualties = this.data.gaza || {};
-        const totalKilled = this.extractNumber(casualties.killed) || 0;
+        const killed = this.data.killed || {};
+        const totalKilled = this.extractNumber(killed.total) || 0;
         
-        // Calculate daily death rate (simplified - would need historical data for accuracy)
-        // Using a conservative estimate based on conflict duration
+        // Calculate daily death rate based on conflict duration
         const conflictStartDate = new Date('2023-10-07');
         const daysSinceStart = Math.floor((Date.now() - conflictStartDate.getTime()) / (1000 * 60 * 60 * 24));
         const dailyDeathRate = totalKilled / daysSinceStart;
