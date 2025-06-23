@@ -66,7 +66,7 @@ body {
     border: 0 !important;
 }
 
-/* Section 1: Extinction Timeline */
+/* Section 1: Extinction Timeline - Crisis Design */
 .countdown-container {
     height: 100vh;
     display: flex;
@@ -75,39 +75,265 @@ body {
     align-items: center;
     text-align: center;
     position: relative;
-    background: radial-gradient(ellipse at center, #1a0000 0%, var(--color-bg-primary) 70%);
+    background: 
+        radial-gradient(ellipse at center, rgba(139, 0, 0, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 20% 80%, rgba(139, 0, 0, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(139, 0, 0, 0.1) 0%, transparent 50%),
+        linear-gradient(135deg, #000000 0%, #0a0000 50%, #000000 100%);
+    overflow: hidden;
+}
+
+.crisis-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+}
+
+.particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(1px 1px at 20px 30px, rgba(255, 51, 51, 0.2), transparent),
+        radial-gradient(1px 1px at 40px 70px, rgba(255, 51, 51, 0.1), transparent),
+        radial-gradient(1px 1px at 90px 40px, rgba(255, 51, 51, 0.15), transparent),
+        radial-gradient(1px 1px at 130px 80px, rgba(255, 51, 51, 0.1), transparent);
+    background-repeat: repeat;
+    background-size: 200px 200px;
+    animation: particles-float 15s linear infinite;
+    opacity: 0.6;
+}
+
+@keyframes particles-float {
+    0% { transform: translateY(100vh) translateX(-10px); }
+    100% { transform: translateY(-100px) translateX(10px); }
+}
+
+.grid-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(rgba(139, 0, 0, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(139, 0, 0, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    opacity: 0.3;
 }
 
 .countdown-content {
     z-index: 2;
+    position: relative;
 }
 
+/* Crisis Status and Warning */
+.crisis-status {
+    margin-bottom: 1rem;
+}
+
+.critical-badge {
+    display: inline-block;
+    background: linear-gradient(45deg, #8B0000, #DC2626);
+    color: white;
+    padding: 0.3rem 1rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    border-radius: 2px;
+    box-shadow: 0 0 10px rgba(220, 38, 38, 0.5);
+    animation: critical-pulse 2s ease-in-out infinite;
+}
+
+@keyframes critical-pulse {
+    0%, 100% { 
+        box-shadow: 0 0 10px rgba(220, 38, 38, 0.5);
+        transform: scale(1);
+    }
+    50% { 
+        box-shadow: 0 0 20px rgba(220, 38, 38, 0.8);
+        transform: scale(1.05);
+    }
+}
+
+.warning-header {
+    margin-bottom: 2rem;
+}
+
+.warning-text {
+    font-family: 'Impact', 'Arial Black', sans-serif;
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    font-weight: 900;
+    color: #DC2626;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-shadow: 0 0 10px rgba(220, 38, 38, 0.3);
+    margin: 0;
+}
+
+/* Main Countdown Display */
 .countdown-display {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
+    gap: 1.5rem;
     margin-bottom: 2rem;
 }
 
 .time-remaining {
-    font-family: var(--font-sans);
-    font-size: clamp(2.5rem, 6vw, 4rem);
-    font-weight: 700;
+    font-family: 'Impact', 'Arial Black', sans-serif;
+    font-size: clamp(3rem, 12vw, 8rem);
+    font-weight: 900;
     color: #DC2626;
     text-align: center;
-    line-height: 1.1;
-    animation: pulse 2s ease-in-out infinite alternate;
-    text-shadow: 0 0 20px rgba(220, 38, 38, 0.3);
+    line-height: 0.9;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    text-shadow: 
+        0 0 10px rgba(220, 38, 38, 0.8),
+        0 0 20px rgba(220, 38, 38, 0.4),
+        2px 2px 4px rgba(0, 0, 0, 0.8);
+    animation: heartbeat-pulse 1s ease-in-out infinite;
+    position: relative;
+}
+
+@keyframes heartbeat-pulse {
+    0%, 100% { 
+        transform: scale(1) translateX(0);
+        text-shadow: 
+            0 0 10px rgba(220, 38, 38, 0.8),
+            0 0 20px rgba(220, 38, 38, 0.4),
+            2px 2px 4px rgba(0, 0, 0, 0.8);
+    }
+    50% { 
+        transform: scale(1.02) translateX(1px);
+        text-shadow: 
+            0 0 15px rgba(220, 38, 38, 1),
+            0 0 30px rgba(220, 38, 38, 0.6),
+            2px 2px 4px rgba(0, 0, 0, 0.8);
+    }
+}
+
+.timeline-bar {
+    width: 80%;
+    height: 2px;
+    background: linear-gradient(90deg, #8B0000, #DC2626, #8B0000);
+    margin: 1rem 0;
+    opacity: 0.8;
 }
 
 .live-countdown {
-    font-family: var(--font-mono);
-    font-size: clamp(1.5rem, 4vw, 2.5rem);
-    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-family: 'Courier New', monospace;
+    font-size: clamp(1.8rem, 6vw, 3.5rem);
+    font-weight: 700;
     color: #E5E7EB;
     text-align: center;
     letter-spacing: 0.05em;
+    text-shadow: 0 0 5px rgba(229, 231, 235, 0.3);
+}
+
+.countdown-segment {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+}
+
+.countdown-segment .number {
+    font-size: 1em;
+    line-height: 1;
+    transition: all 0.2s ease-out;
+    animation: number-glow 3s ease-in-out infinite;
+}
+
+@keyframes number-glow {
+    0%, 100% { 
+        text-shadow: 0 0 5px rgba(229, 231, 235, 0.3);
+    }
+    50% { 
+        text-shadow: 0 0 10px rgba(229, 231, 235, 0.6);
+    }
+}
+
+.countdown-segment .label {
+    font-size: 0.3em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    letter-spacing: 0.1em;
+}
+
+.separator {
+    font-size: 1.2em;
+    color: #DC2626;
+    font-weight: 900;
+}
+
+.separator.blink {
+    animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0.3; }
+}
+
+/* Crisis Information */
+.crisis-info {
+    z-index: 2;
+    position: relative;
+}
+
+.lives-lost {
+    font-size: 0.9rem;
+    color: #DC2626;
+    font-weight: 600;
+    margin-top: 0.5rem;
+    text-shadow: 0 0 5px rgba(220, 38, 38, 0.3);
+}
+
+.lives-lost #lives-count {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: #FF4444;
+}
+
+/* Sound Controls */
+.sound-controls {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1000;
+}
+
+.sound-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: rgba(139, 0, 0, 0.8);
+    color: white;
+    border: 1px solid rgba(220, 38, 38, 0.5);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+.sound-button:hover {
+    background: rgba(220, 38, 38, 0.8);
+    box-shadow: 0 0 10px rgba(220, 38, 38, 0.4);
+}
+
+.sound-button.muted {
+    background: rgba(69, 69, 69, 0.8);
+    border-color: rgba(153, 153, 153, 0.5);
 }
 
 @keyframes pulse {
@@ -590,11 +816,40 @@ body {
 /* Responsive Design */
 @media (max-width: 768px) {
     .time-remaining {
-        font-size: 2rem;
+        font-size: clamp(1.8rem, 8vw, 3rem);
     }
     
     .live-countdown {
-        font-size: 1.2rem;
+        font-size: clamp(1rem, 4vw, 1.8rem);
+        flex-wrap: wrap;
+        gap: 0.3rem;
+    }
+    
+    .countdown-segment .number {
+        font-size: 0.9em;
+    }
+    
+    .countdown-segment .label {
+        font-size: 0.25em;
+    }
+    
+    .warning-text {
+        font-size: clamp(1rem, 4vw, 1.4rem);
+    }
+    
+    .critical-badge {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.8rem;
+    }
+    
+    .sound-controls {
+        top: 0.5rem;
+        right: 0.5rem;
+    }
+    
+    .sound-button {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.7rem;
     }
     
     .action-categories {

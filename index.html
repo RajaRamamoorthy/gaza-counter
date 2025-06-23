@@ -58,20 +58,67 @@
 <body>
     <!-- Section 1: Extinction Timeline -->
     <section id="extinction-timeline" class="countdown-container">
+        <div class="crisis-background">
+            <div class="particles" aria-hidden="true"></div>
+            <div class="grid-overlay" aria-hidden="true"></div>
+        </div>
+        
         <div class="countdown-content">
+            <div class="crisis-status">
+                <span class="critical-badge">CRITICAL STATUS</span>
+            </div>
+            
+            <div class="warning-header">
+                <h1 class="warning-text">WARNING: EXTINCTION TIMELINE</h1>
+            </div>
+            
             <div class="countdown-display">
                 <div id="time-remaining" class="time-remaining loading" aria-live="polite">
                     Loading data...
                 </div>
+                <div class="timeline-bar" aria-hidden="true"></div>
                 <div id="live-countdown" class="live-countdown" aria-live="polite" role="timer">
-                    --- days : -- hours : -- minutes : -- seconds
+                    <span class="countdown-segment">
+                        <span class="number">---</span>
+                        <span class="label">days</span>
+                    </span>
+                    <span class="separator blink">:</span>
+                    <span class="countdown-segment">
+                        <span class="number">--</span>
+                        <span class="label">hrs</span>
+                    </span>
+                    <span class="separator blink">:</span>
+                    <span class="countdown-segment">
+                        <span class="number">--</span>
+                        <span class="label">min</span>
+                    </span>
+                    <span class="separator blink">:</span>
+                    <span class="countdown-segment">
+                        <span class="number">--</span>
+                        <span class="label">sec</span>
+                    </span>
                 </div>
             </div>
-            <p class="countdown-label">Until Gaza ceases to exist at current rate</p>
-            <p id="death-rate-info" class="death-rate-info">Calculating death rate...</p>
+            
+            <div class="crisis-info">
+                <p class="countdown-label">Until Gaza ceases to exist at current rate</p>
+                <p id="death-rate-info" class="death-rate-info">Calculating death rate...</p>
+                <p id="lives-lost-counter" class="lives-lost">Lives lost since you arrived: <span id="lives-count">0</span></p>
+            </div>
         </div>
+        
         <div class="scroll-indicator" aria-hidden="true">
             <div class="scroll-arrow"></div>
+        </div>
+        
+        <!-- Sound Controls -->
+        <div class="sound-controls">
+            <button id="sound-toggle" class="sound-button" aria-label="Toggle heartbeat sound">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                </svg>
+                <span class="sound-label">Sound ON</span>
+            </button>
         </div>
     </section>
 
