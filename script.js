@@ -419,11 +419,7 @@ class GazaCrisisApp {
             shareButton.addEventListener('click', this.shareContent.bind(this));
         }
 
-        // Pause animations button
-        const pauseButton = document.getElementById('pause-animations');
-        if (pauseButton) {
-            pauseButton.addEventListener('click', this.toggleAnimations.bind(this));
-        }
+
 
 
 
@@ -482,29 +478,7 @@ class GazaCrisisApp {
         }
     }
 
-    toggleAnimations() {
-        this.animationsPaused = !this.animationsPaused;
-        const pauseButton = document.getElementById('pause-animations');
-        const timeRemaining = document.querySelector('.time-remaining');
-        
-        if (this.animationsPaused) {
-            pauseButton.textContent = '▶ Resume Animations';
-            document.body.style.setProperty('--animation-play-state', 'paused');
-            if (timeRemaining) timeRemaining.classList.add('paused');
-            // Stop the live countdown when animations are paused
-            if (this.countdownInterval) {
-                clearInterval(this.countdownInterval);
-            }
-        } else {
-            pauseButton.textContent = '⏸ Pause Animations';
-            document.body.style.setProperty('--animation-play-state', 'running');
-            if (timeRemaining) timeRemaining.classList.remove('paused');
-            // Restart the live countdown when animations resume
-            this.countdownInterval = setInterval(() => {
-                this.updateLiveCountdown();
-            }, 1000);
-        }
-    }
+
 
 
 
