@@ -1048,6 +1048,37 @@ body {
     .scroll-indicator {
         animation: none;
     }
+}
+
+/* Scroll Indicator Interactive Styles */
+.scroll-indicator {
+    cursor: pointer;
+    padding: 1rem;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+}
+
+.scroll-indicator:hover {
+    opacity: 1;
+    transform: translateX(-50%) scale(1.1);
+}
+
+.scroll-indicator:active {
+    transform: translateX(-50%) scale(0.95);
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+    .scroll-indicator {
+        padding: 1.5rem;
+        opacity: 0.8;
+    }
+    
+    .scroll-indicator:active {
+        opacity: 1;
+        transform: translateX(-50%) scale(1.05);
+    }
     
     .countdown-timer {
         animation: none;

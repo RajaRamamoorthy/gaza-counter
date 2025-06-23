@@ -423,6 +423,42 @@ class GazaCrisisApp {
     }
 
     /**
+     * Scroll Indicator Setup
+     */
+    setupScrollIndicator() {
+        const scrollIndicator = document.querySelector('.scroll-indicator');
+        if (!scrollIndicator) return;
+
+        const scrollToNextSection = () => {
+            const nextSection = document.getElementById('casualty-tracker');
+            if (nextSection) {
+                nextSection.scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start',
+                    inline: 'nearest'
+                });
+            }
+        };
+
+        // Handle click events
+        scrollIndicator.addEventListener('click', scrollToNextSection);
+
+        // Handle touch events for mobile devices
+        scrollIndicator.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            scrollToNextSection();
+        });
+
+        // Handle keyboard navigation for accessibility
+        scrollIndicator.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                scrollToNextSection();
+            }
+        });
+    }
+
+    /**
      * Event Listeners
      */
     setupEventListeners() {
@@ -440,6 +476,9 @@ class GazaCrisisApp {
         if (shareButton) {
             shareButton.addEventListener('click', this.shareContent.bind(this));
         }
+
+        // Scroll indicator functionality
+        this.setupScrollIndicator();
 
 
 
