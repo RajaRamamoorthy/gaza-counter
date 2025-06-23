@@ -297,7 +297,7 @@ class GazaCrisisApp {
 
         const timeRemainingElement = document.getElementById('time-remaining');
         if (timeRemainingElement) {
-            let timeStatement = "In ";
+            let timeStatement = "";
             
             if (years > 0) {
                 timeStatement += `${years} ${years === 1 ? 'year' : 'years'}`;
