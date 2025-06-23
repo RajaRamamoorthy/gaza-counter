@@ -89,8 +89,18 @@ class GazaCrisisApp {
             this.updateLastUpdated();
             this.updateUI();
             
+            // Track data update in analytics
+            if (window.crisisAnalytics) {
+                window.crisisAnalytics.trackDataUpdate(data);
+            }
+            
         } catch (error) {
             console.warn('API fetch failed, trying cached data:', error);
+            
+            // Track API error in analytics
+            if (window.trackAPIError) {
+                window.trackAPIError(this.API_URL, error);
+            }
             
             // Try to load from cache
             const cachedData = this.getCachedData();

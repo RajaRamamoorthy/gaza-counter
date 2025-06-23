@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CB4PGRSSCB"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-CB4PGRSSCB');
+    </script>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Primary Meta Tags -->
@@ -365,6 +374,58 @@
 
 
 
+    <!-- Cookie Consent Notice -->
+    <div id="cookie-consent" class="cookie-consent" style="display: none;">
+        <div class="consent-content">
+            <p>This site uses analytics to help us understand how people interact with humanitarian crisis data. Your privacy is important to us.</p>
+            <div class="consent-buttons">
+                <button id="accept-cookies" class="consent-btn accept">Accept Analytics</button>
+                <button id="decline-cookies" class="consent-btn decline">Decline</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="analytics.js"></script>
     <script src="script.js"></script>
+    
+    <!-- Cookie Consent Logic -->
+    <script>
+        // Check for existing consent
+        function checkCookieConsent() {
+            const consent = localStorage.getItem('ga_consent');
+            if (!consent) {
+                document.getElementById('cookie-consent').style.display = 'block';
+            }
+        }
+
+        // Handle consent acceptance
+        document.getElementById('accept-cookies').addEventListener('click', function() {
+            localStorage.setItem('ga_consent', 'true');
+            document.getElementById('cookie-consent').style.display = 'none';
+            
+            // Enable GA4 tracking
+            gtag('consent', 'update', {
+                'analytics_storage': 'granted'
+            });
+        });
+
+        // Handle consent decline
+        document.getElementById('decline-cookies').addEventListener('click', function() {
+            localStorage.setItem('ga_consent', 'false');
+            document.getElementById('cookie-consent').style.display = 'none';
+            
+            // Disable GA4 tracking
+            gtag('consent', 'update', {
+                'analytics_storage': 'denied'
+            });
+        });
+
+        // Initialize consent check
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', checkCookieConsent);
+        } else {
+            checkCookieConsent();
+        }
+    </script>
 </body>
 </html>

@@ -1,0 +1,218 @@
+Add GA4 tracking with measurement ID: G-CB4PGRSSCB
+1. INSTALL GA4 GLOBAL SITE TAG
+Add this immediately after the opening <head> tag:
+html<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-CB4PGRSSCB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-CB4PGRSSCB');
+</script>
+2. TRACK PAGE ENGAGEMENT EVENTS
+Time-Based Engagement:
+javascript// Track how long users view the crisis data
+let startTime = Date.now();
+let timeEngaged = 0;
+
+// Fire event every 30 seconds of active engagement
+setInterval(() => {
+  if (document.hasFocus()) {
+    timeEngaged += 30;
+    gtag('event', 'crisis_data_engagement', {
+      'engagement_time_seconds': timeEngaged,
+      'countdown_value': document.querySelector('.countdown-timer').textContent
+    });
+  }
+}, 30000);
+3. TRACK DONATION/AID CLICKS
+javascript// Track all donation button clicks
+document.querySelectorAll('.donate-button, .action-button').forEach(button => {
+  button.addEventListener('click', function(e) {
+    const organizationName = this.closest('.donation-card').querySelector('.org-name').textContent;
+    const section = this.closest('section').className;
+    
+    gtag('event', 'donation_click', {
+      'organization': organizationName,
+      'section_type': section,
+      'current_death_toll': getCurrentDeathToll(), // Get from your API data
+      'time_on_page': Math.floor((Date.now() - startTime) / 1000)
+    });
+  });
+});
+4. TRACK SECTION VISIBILITY
+javascript// Track when users see each major section
+const sections = ['countdown-section', 'current-reality', 'aid-section'];
+
+const observerOptions = {
+  threshold: 0.5,
+  rootMargin: '0px'
+};
+
+const sectionObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      gtag('event', 'section_viewed', {
+        'section_name': entry.target.id,
+        'percentage_viewed': Math.round(entry.intersectionRatio * 100)
+      });
+    }
+  });
+}, observerOptions);
+
+sections.forEach(sectionId => {
+  const element = document.getElementById(sectionId);
+  if (element) sectionObserver.observe(element);
+});
+5. TRACK SOCIAL SHARING
+javascript// Track share button clicks
+document.querySelectorAll('.share-button').forEach(button => {
+  button.addEventListener('click', function() {
+    const platform = this.dataset.platform; // twitter, facebook, etc.
+    
+    gtag('event', 'share', {
+      'method': platform,
+      'content_type': 'humanitarian_crisis',
+      'item_id': 'gaza_crisis_tracker'
+    });
+  });
+});
+6. TRACK CRITICAL DATA POINTS VIEWING
+javascript// Track when users hover/focus on specific statistics
+const criticalStats = {
+  'children-killed': 'children_casualties',
+  'total-killed': 'total_casualties',
+  'hospitals-destroyed': 'infrastructure_damage',
+  'homes-destroyed': 'homes_lost'
+};
+
+Object.keys(criticalStats).forEach(statId => {
+  const element = document.getElementById(statId);
+  if (element) {
+    element.addEventListener('mouseenter', function() {
+      gtag('event', 'statistic_focus', {
+        'statistic_type': criticalStats[statId],
+        'current_value': this.textContent
+      });
+    });
+  }
+});
+7. TRACK API DATA REFRESH
+javascript// Track when data updates from API
+function onDataUpdate(newData) {
+  gtag('event', 'data_refresh', {
+    'total_casualties': newData.total_killed,
+    'daily_rate': newData.daily_average,
+    'days_since_start': newData.days_elapsed
+  });
+}
+8. TRACK SCROLL DEPTH
+javascript// Track how far users scroll
+let maxScroll = 0;
+let scrollPoints = [25, 50, 75, 90, 100];
+let firedPoints = [];
+
+window.addEventListener('scroll', () => {
+  const scrollPercent = Math.round((window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100);
+  
+  if (scrollPercent > maxScroll) {
+    maxScroll = scrollPercent;
+    
+    scrollPoints.forEach(point => {
+      if (scrollPercent >= point && !firedPoints.includes(point)) {
+        firedPoints.push(point);
+        gtag('event', 'scroll', {
+          'percent_scrolled': point
+        });
+      }
+    });
+  }
+});
+9. TRACK PAGE EXIT INTENT
+javascript// Track when users are about to leave
+document.addEventListener('visibilitychange', function() {
+  if (document.hidden) {
+    gtag('event', 'page_exit_intent', {
+      'time_on_page': Math.floor((Date.now() - startTime) / 1000),
+      'max_scroll_depth': maxScroll,
+      'donations_clicked': document.querySelectorAll('.donate-button.clicked').length
+    });
+  }
+});
+10. ENHANCED E-COMMERCE FOR DONATIONS (Optional)
+javascript// If you want to track donation amounts or goals
+function trackDonationGoal(organization, suggestedAmount) {
+  gtag('event', 'view_item', {
+    'currency': 'USD',
+    'value': suggestedAmount,
+    'items': [{
+      'item_id': organization.toLowerCase().replace(/\s/g, '_'),
+      'item_name': organization,
+      'item_category': 'humanitarian_aid',
+      'price': suggestedAmount,
+      'quantity': 1
+    }]
+  });
+}
+11. CUSTOM DIMENSIONS SETUP
+javascript// Send custom dimensions with every page view
+gtag('config', 'G-CB4PGRSSCB', {
+  'custom_map.dimension1': 'crisis_severity',
+  'custom_map.dimension2': 'user_action_taken',
+  'crisis_severity': calculateSeverityScore(), // Based on current death rate
+  'user_action_taken': 'viewing' // Update when user takes action
+});
+12. ERROR TRACKING
+javascript// Track any API or loading errors
+window.addEventListener('error', function(e) {
+  gtag('event', 'exception', {
+    'description': e.message,
+    'fatal': false,
+    'error_type': 'javascript_error'
+  });
+});
+
+// Track API failures
+function trackAPIError(endpoint, error) {
+  gtag('event', 'api_error', {
+    'endpoint': endpoint,
+    'error_message': error.message,
+    'error_code': error.code
+  });
+}
+13. PERFORMANCE METRICS
+javascript// Track page load performance
+window.addEventListener('load', function() {
+  if ('performance' in window) {
+    const perfData = window.performance.timing;
+    const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
+    
+    gtag('event', 'page_timing', {
+      'page_load_time': pageLoadTime,
+      'dom_interactive_time': perfData.domInteractive - perfData.navigationStart
+    });
+  }
+});
+IMPLEMENTATION NOTES:
+
+Add unique IDs to all trackable elements if they don't exist
+Test all events in GA4 DebugView before going live
+Create custom audiences based on engagement levels
+Set up conversion events for donation clicks
+Create custom reports focusing on:
+
+User engagement with crisis data
+Donation funnel analysis
+Content effectiveness
+Geographic distribution of engaged users
+
+
+
+PRIVACY CONSIDERATION:
+Add a simple cookie consent notice since GA4 uses cookies:
+javascript// Add at page load
+if (!localStorage.getItem('ga_consent')) {
+  // Show consent banner
+  // On acceptance:
+  localStorage.setItem('ga_consent', 'true');
+}
