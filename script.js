@@ -17,13 +17,8 @@ class GazaCrisisApp {
         this.livesCounterInterval = null;
         this.animationsPaused = false;
         this.hasAnimated = new Set();
-        this.soundEnabled = false;
         this.pageLoadTime = Date.now();
         this.dailyDeathRate = 0;
-        
-        // Create audio context for heartbeat sound
-        this.audioContext = null;
-        this.initAudio();
         
         this.init();
     }
@@ -45,37 +40,7 @@ class GazaCrisisApp {
         }
     }
 
-    initAudio() {
-        try {
-            this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        } catch (error) {
-            console.warn('Audio not supported:', error);
-        }
-    }
 
-    playHeartbeat() {
-        if (!this.soundEnabled || !this.audioContext) return;
-        
-        try {
-            const oscillator = this.audioContext.createOscillator();
-            const gainNode = this.audioContext.createGain();
-            
-            oscillator.connect(gainNode);
-            gainNode.connect(this.audioContext.destination);
-            
-            oscillator.frequency.setValueAtTime(80, this.audioContext.currentTime);
-            oscillator.frequency.exponentialRampToValueAtTime(40, this.audioContext.currentTime + 0.1);
-            
-            gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
-            gainNode.gain.linearRampToValueAtTime(0.1, this.audioContext.currentTime + 0.01);
-            gainNode.gain.exponentialRampToValueAtTime(0.001, this.audioContext.currentTime + 0.1);
-            
-            oscillator.start(this.audioContext.currentTime);
-            oscillator.stop(this.audioContext.currentTime + 0.1);
-        } catch (error) {
-            console.warn('Failed to play heartbeat:', error);
-        }
-    }
 
     startLivesCounter() {
         if (this.livesCounterInterval) {
@@ -294,7 +259,6 @@ class GazaCrisisApp {
         
         this.countdownInterval = setInterval(() => {
             this.updateLiveCountdown();
-            this.playHeartbeat(); // Play heartbeat sound on each tick
         }, 1000); // Update every second
         
         // Initial update
@@ -361,11 +325,10 @@ class GazaCrisisApp {
 
     updateCountdownSegments(days, hours, minutes, seconds) {
         const segments = document.querySelectorAll('.countdown-segment .number');
-        if (segments.length >= 4) {
-            segments[0].textContent = days.toString().padStart(3, '0');
-            segments[1].textContent = hours.toString().padStart(2, '0');
-            segments[2].textContent = minutes.toString().padStart(2, '0');
-            segments[3].textContent = seconds.toString().padStart(2, '0');
+        if (segments.length >= 3) {
+            segments[0].textContent = hours.toString().padStart(2, '0');
+            segments[1].textContent = minutes.toString().padStart(2, '0');
+            segments[2].textContent = seconds.toString().padStart(2, '0');
         }
         
         // Update ARIA label for accessibility (less frequently to avoid spam)
@@ -373,7 +336,7 @@ class GazaCrisisApp {
             const liveCountdownElement = document.getElementById('live-countdown');
             if (liveCountdownElement) {
                 liveCountdownElement.setAttribute('aria-label', 
-                    `${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds remaining`
+                    `${hours} hours, ${minutes} minutes, ${seconds} seconds remaining`
                 );
             }
         }
@@ -460,11 +423,7 @@ class GazaCrisisApp {
             pauseButton.addEventListener('click', this.toggleAnimations.bind(this));
         }
 
-        // Sound toggle button
-        const soundButton = document.getElementById('sound-toggle');
-        if (soundButton) {
-            soundButton.addEventListener('click', this.toggleSound.bind(this));
-        }
+
 
         // Retry button
         const retryButton = document.getElementById('retry-button');
@@ -541,28 +500,11 @@ class GazaCrisisApp {
             // Restart the live countdown when animations resume
             this.countdownInterval = setInterval(() => {
                 this.updateLiveCountdown();
-                this.playHeartbeat();
             }, 1000);
         }
     }
 
-    toggleSound() {
-        this.soundEnabled = !this.soundEnabled;
-        const soundButton = document.getElementById('sound-toggle');
-        const soundLabel = soundButton?.querySelector('.sound-label');
-        
-        if (this.soundEnabled) {
-            // Resume audio context if needed
-            if (this.audioContext && this.audioContext.state === 'suspended') {
-                this.audioContext.resume();
-            }
-            soundButton?.classList.remove('muted');
-            if (soundLabel) soundLabel.textContent = 'Sound ON';
-        } else {
-            soundButton?.classList.add('muted');
-            if (soundLabel) soundLabel.textContent = 'Sound OFF';
-        }
-    }
+
 
     /**
      * Auto-refresh

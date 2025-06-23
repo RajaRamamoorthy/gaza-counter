@@ -183,36 +183,27 @@ body {
 }
 
 .time-remaining {
-    font-family: 'Impact', 'Arial Black', sans-serif;
-    font-size: clamp(3rem, 12vw, 8rem);
-    font-weight: 900;
+    font-family: var(--font-sans);
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    font-weight: 700;
     color: #DC2626;
     text-align: center;
-    line-height: 0.9;
+    line-height: 1.2;
     text-transform: uppercase;
-    letter-spacing: 0.02em;
-    text-shadow: 
-        0 0 10px rgba(220, 38, 38, 0.8),
-        0 0 20px rgba(220, 38, 38, 0.4),
-        2px 2px 4px rgba(0, 0, 0, 0.8);
-    animation: heartbeat-pulse 1s ease-in-out infinite;
+    letter-spacing: 0.05em;
+    text-shadow: 0 0 5px rgba(220, 38, 38, 0.3);
+    animation: subtle-pulse 3s ease-in-out infinite;
     position: relative;
 }
 
-@keyframes heartbeat-pulse {
+@keyframes subtle-pulse {
     0%, 100% { 
-        transform: scale(1) translateX(0);
-        text-shadow: 
-            0 0 10px rgba(220, 38, 38, 0.8),
-            0 0 20px rgba(220, 38, 38, 0.4),
-            2px 2px 4px rgba(0, 0, 0, 0.8);
+        opacity: 0.9;
+        text-shadow: 0 0 5px rgba(220, 38, 38, 0.3);
     }
     50% { 
-        transform: scale(1.02) translateX(1px);
-        text-shadow: 
-            0 0 15px rgba(220, 38, 38, 1),
-            0 0 30px rgba(220, 38, 38, 0.6),
-            2px 2px 4px rgba(0, 0, 0, 0.8);
+        opacity: 1;
+        text-shadow: 0 0 8px rgba(220, 38, 38, 0.4);
     }
 }
 
