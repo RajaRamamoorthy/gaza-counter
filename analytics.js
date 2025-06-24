@@ -304,7 +304,7 @@ if (document.readyState === 'loading') {
 
 // Configure GA4 with custom dimensions
 if (typeof gtag !== 'undefined') {
-    gtag('config', 'G-CB4PGRSSCB', {
+    gtag('config', 'G-Z8LWP9TW4T', {
         'custom_map.dimension1': 'crisis_severity',
         'custom_map.dimension2': 'user_action_taken',
         'crisis_severity': 'critical',

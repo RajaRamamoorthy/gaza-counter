@@ -1,0 +1,71 @@
+Gaza Crisis Tracker - Enable GA4 Analytics
+Current Status
+Your project already has GA4 analytics code implemented with measurement ID G-CB4PGRSSCB. You need to update it to use G-Z8LWP9TW4T.
+Step 1: Update HTML File
+File: index.html (Lines 11-18)
+REPLACE:
+html<script async src="https://www.googletagmanager.com/gtag/js?id=G-CB4PGRSSCB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-CB4PGRSSCB');
+</script>
+WITH:
+html<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z8LWP9TW4T"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-Z8LWP9TW4T');
+</script>
+Step 2: Update Analytics Configuration File
+File: analytics.js (Bottom of file, around line 409)
+REPLACE:
+javascriptif (typeof gtag !== 'undefined') {
+    gtag('config', 'G-CB4PGRSSCB', {
+        'custom_map.dimension1': 'crisis_severity',
+        'custom_map.dimension2': 'user_action_taken',
+        'crisis_severity': 'critical',
+        'user_action_taken': 'viewing'
+    });
+}
+WITH:
+javascriptif (typeof gtag !== 'undefined') {
+    gtag('config', 'G-Z8LWP9TW4T', {
+        'custom_map.dimension1': 'crisis_severity',
+        'custom_map.dimension2': 'user_action_taken',
+        'crisis_severity': 'critical',
+        'user_action_taken': 'viewing'
+    });
+}
+Step 3: Update Meta Tags (Optional)
+File: index.html (Lines 40-50)
+Update the Open Graph image URLs if you want them to match your domain:
+html<meta property="og:image" content="https://your-replit-url.replit.app/favicon.ico">
+<meta property="twitter:image" content="https://your-replit-url.replit.app/favicon.ico">
+Step 4: Test the Setup
+
+Deploy your changes in Replit
+Open your site in a browser
+Open Developer Tools (F12)
+Go to Network tab and look for requests to googletagmanager.com
+Verify you see G-Z8LWP9TW4T in the network requests
+
+Step 5: Verify Analytics Events
+Your site already tracks these events automatically:
+
+crisis_data_engagement - Time spent viewing crisis data
+donation_click - Donation button clicks
+section_viewed - Section visibility tracking
+scroll - Scroll depth tracking
+share_genocide_classification - Social sharing
+data_refresh - API data updates
+
+Step 6: Check GA4 Dashboard
+Within 24-48 hours, you should see data in your GA4 property dashboard for:
+
+Real-time users viewing the crisis tracker
+Donation button interactions
+Social sharing activity
+Crisis data engagement metrics
