@@ -652,12 +652,15 @@ class GazaCrisisApp {
         const lastUpdatedElement = document.getElementById('last-updated');
         if (lastUpdatedElement) {
             const now = new Date();
-            const timeString = now.toLocaleTimeString('en-US', {
+            const dateTimeString = now.toLocaleString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
                 hour: '2-digit',
                 minute: '2-digit',
                 timeZoneName: 'short'
             });
-            lastUpdatedElement.textContent = `Last updated: ${timeString}`;
+            lastUpdatedElement.textContent = `Last updated: ${dateTimeString}`;
         }
     }
 
