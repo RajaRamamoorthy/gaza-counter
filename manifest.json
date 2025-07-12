@@ -1,0 +1,20 @@
+{
+  "name": "Gaza Population Crisis Tracker",
+  "short_name": "Gaza Tracker",
+  "description": "Real-time tracking of humanitarian crisis in Gaza with live statistics and ways to help",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#ff3333",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "16x16 32x32",
+      "type": "image/x-icon"
+    }
+  ],
+  "categories": ["news", "social", "utilities"],
+  "lang": "en-US",
+  "scope": "/"
+}

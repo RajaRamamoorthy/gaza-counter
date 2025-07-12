@@ -66,13 +66,27 @@ class GazaCrisisApp {
      */
     async loadData() {
         try {
-            // Try to load from API first
+            // Check cache first
+            const cachedData = this.getCachedData();
+            if (cachedData) {
+                this.data = cachedData;
+                this.updateUI();
+                return;
+            }
+
+            // Try to load from API
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+
             const response = await fetch(this.API_URL, {
                 headers: {
                     'Accept': 'application/json',
                 },
-                cache: 'no-cache'
+                cache: 'no-cache',
+                signal: controller.signal
             });
+
+            clearTimeout(timeoutId);
 
             if (!response.ok) {
                 throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -82,6 +96,11 @@ class GazaCrisisApp {
             
             if (!data || typeof data !== 'object') {
                 throw new Error('Invalid data format received from API');
+            }
+
+            // Validate required data fields
+            if (!data.killed || typeof data.killed.total === 'undefined') {
+                throw new Error('Missing required casualty data');
             }
 
             this.data = data;
@@ -681,12 +700,23 @@ class GazaCrisisApp {
      * Cleanup
      */
     destroy() {
+        // Clear all intervals to prevent memory leaks
         if (this.countdownInterval) {
             clearInterval(this.countdownInterval);
+            this.countdownInterval = null;
         }
         if (this.refreshInterval) {
             clearInterval(this.refreshInterval);
+            this.refreshInterval = null;
         }
+        if (this.livesCounterInterval) {
+            clearInterval(this.livesCounterInterval);
+            this.livesCounterInterval = null;
+        }
+        
+        // Clear data references
+        this.data = null;
+        this.hasAnimated.clear();
     }
 }
 
