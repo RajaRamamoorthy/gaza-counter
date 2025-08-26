@@ -4,7 +4,8 @@
  */
 
 class CrisisAnalytics {
-    constructor() {
+    constructor(appInstance) {
+        this.app = appInstance;
         this.startTime = Date.now();
         this.timeEngaged = 0;
         this.maxScroll = 0;
@@ -258,8 +259,10 @@ class CrisisAnalytics {
 
     // Utility methods
     getCurrentDeathToll() {
-        const totalKilledElement = document.getElementById('total-killed');
-        return totalKilledElement ? totalKilledElement.textContent.replace(/,/g, '') : '0';
+        if (this.app && this.app.data && this.app.data.killed && this.app.data.killed.total) {
+            return this.app.data.killed.total.toString();
+        }
+        return '0';
     }
 
     calculateEngagementLevel() {
