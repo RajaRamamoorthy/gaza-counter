@@ -35,7 +35,7 @@ class GazaCrisisApp {
             this.hideLoading();
         } catch (error) {
             console.error('Initialization failed:', error);
-            this.showError('Failed to initialize application');
+            this.showError(error.message || 'Failed to initialize application');
             this.hideLoading();
         }
     }
@@ -126,9 +126,11 @@ class GazaCrisisApp {
             if (cachedData) {
                 this.data = cachedData;
                 this.updateUI();
-                this.showError('Using cached data - connection issues detected');
+                // We don't show a blocking error here, just a console warning.
+                // A small, non-blocking notification could be an alternative.
+                console.warn('Using cached data - connection issues detected');
             } else {
-                throw new Error('No data available - API unreachable and no cache found');
+                throw new Error('No data available: The API is unreachable and no cached data was found.');
             }
         }
     }
@@ -204,20 +206,11 @@ class GazaCrisisApp {
     }
 
     updateInfrastructure() {
-        // Current API doesn't provide infrastructure data, using approximations based on massacres
-        const massacres = this.extractNumber(this.data.massacres) || 0;
-        
-        // Estimate infrastructure damage based on the scale of destruction
-        // These are conservative estimates based on documented destruction patterns
-        const hospitalsDestroyed = Math.floor(massacres * 0.003); // ~36 hospitals destroyed
-        const schoolsDestroyed = Math.floor(massacres * 0.05); // ~600 schools destroyed  
-        const mosquesDestroyed = Math.floor(massacres * 0.02); // ~240 mosques destroyed
-        const homesDestroyed = Math.floor(massacres * 15); // ~180,000 homes destroyed
-
-        this.updateElement('hospitals-destroyed', hospitalsDestroyed);
-        this.updateElement('schools-destroyed', schoolsDestroyed);
-        this.updateElement('mosques-destroyed', mosquesDestroyed);
-        this.updateElement('homes-destroyed', homesDestroyed);
+        // This functionality is removed until a reliable data source for infrastructure is available.
+        const infrastructureSection = document.querySelector('.infrastructure-section');
+        if (infrastructureSection) {
+            infrastructureSection.style.display = 'none';
+        }
     }
 
     updatePopulationVisualization() {
@@ -448,67 +441,57 @@ class GazaCrisisApp {
         const scrollIndicator = document.querySelector('.scroll-indicator');
         if (!scrollIndicator) return;
 
-        const scrollToNextSection = () => {
-            const nextSection = document.getElementById('casualty-tracker');
-            if (nextSection) {
-                nextSection.scrollIntoView({ 
-                    behavior: 'smooth',
-                    block: 'start',
-                    inline: 'nearest'
-                });
+        this.handlers.scrollToNext = (e) => {
+            if (e.type === 'keydown' && (e.key !== 'Enter' && e.key !== ' ')) {
+                return;
             }
+            e.preventDefault();
+            document.getElementById('casualty-tracker')?.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start',
+                inline: 'nearest'
+            });
         };
 
-        // Handle click events
-        scrollIndicator.addEventListener('click', scrollToNextSection);
-
-        // Handle touch events for mobile devices
-        scrollIndicator.addEventListener('touchend', (e) => {
-            e.preventDefault();
-            scrollToNextSection();
-        });
-
-        // Handle keyboard navigation for accessibility
-        scrollIndicator.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                scrollToNextSection();
-            }
-        });
+        scrollIndicator.addEventListener('click', this.handlers.scrollToNext);
+        scrollIndicator.addEventListener('touchend', this.handlers.scrollToNext);
+        scrollIndicator.addEventListener('keydown', this.handlers.scrollToNext);
     }
 
     /**
      * Event Listeners
      */
     setupEventListeners() {
-        // Refresh data button
-        const refreshButton = document.getElementById('refresh-data');
-        if (refreshButton) {
-            refreshButton.addEventListener('click', async (e) => {
+        // To ensure proper cleanup, we bind event handlers once and store them.
+        this.handlers = {
+            refresh: async (e) => {
                 e.preventDefault();
                 await this.refreshData();
-            });
-        }
+            },
+            reload: () => window.location.reload(),
+            share: this.shareContent.bind(this),
+            scroll: this.setupScrollIndicator.bind(this),
+            keyboard: (e) => {
+                if (e.key === 'Escape') {
+                    // Reserved
+                }
+            }
+        };
+
+        // Refresh data button
+        document.getElementById('refresh-data')?.addEventListener('click', this.handlers.refresh);
+
+        // Error refresh button
+        document.getElementById('error-refresh-button')?.addEventListener('click', this.handlers.reload);
 
         // Share button
-        const shareButton = document.getElementById('share-button');
-        if (shareButton) {
-            shareButton.addEventListener('click', this.shareContent.bind(this));
-        }
+        document.getElementById('share-button')?.addEventListener('click', this.handlers.share);
 
         // Scroll indicator functionality
         this.setupScrollIndicator();
 
-
-
-
-
         // Keyboard navigation
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                // Reserved for future keyboard shortcuts
-            }
-        });
+        document.addEventListener('keydown', this.handlers.keyboard);
     }
 
     async refreshData() {
@@ -526,10 +509,13 @@ class GazaCrisisApp {
     shareContent() {
         const url = window.location.href;
         const killed = this.data?.killed?.total || 0;
-        const dailyRate = this.dailyDeathRate || 0;
+        const dailyRate = Math.round(this.dailyDeathRate) || 0;
+        const remainingPopulation = this.GAZA_POPULATION - killed;
+        const daysUntilExtinction = Math.floor(remainingPopulation / this.dailyDeathRate);
+        const yearsUntilExtinction = Math.floor(daysUntilExtinction / 365);
         
         // Dynamic message based on current data
-        const text = `Gaza faces extinction in 68 years at current rates. ${this.formatNumber(killed)} lives lost. See the real-time data and take action.`;
+        const text = `At a rate of ${dailyRate} deaths per day, Gaza's population faces extinction in ~${yearsUntilExtinction} years. ${this.formatNumber(killed)} lives have been lost. See the real-time data and take action.`;
         
         if (navigator.share) {
             navigator.share({
@@ -625,12 +611,21 @@ class GazaCrisisApp {
     }
 
     showError(message) {
-        // Error message UI removed - log to console instead
-        console.warn('Error:', message);
+        const errorOverlay = document.getElementById('error-message');
+        if (errorOverlay) {
+            const errorMessageElement = errorOverlay.querySelector('p');
+            if (errorMessageElement) {
+                errorMessageElement.textContent = message;
+            }
+            errorOverlay.classList.add('show');
+        }
     }
 
     hideError() {
-        // Error message UI removed - no action needed
+        const errorOverlay = document.getElementById('error-message');
+        if (errorOverlay) {
+            errorOverlay.classList.remove('show');
+        }
     }
 
     showTemporaryMessage(message) {
@@ -701,17 +696,23 @@ class GazaCrisisApp {
      */
     destroy() {
         // Clear all intervals to prevent memory leaks
-        if (this.countdownInterval) {
-            clearInterval(this.countdownInterval);
-            this.countdownInterval = null;
-        }
-        if (this.refreshInterval) {
-            clearInterval(this.refreshInterval);
-            this.refreshInterval = null;
-        }
-        if (this.livesCounterInterval) {
-            clearInterval(this.livesCounterInterval);
-            this.livesCounterInterval = null;
+        clearInterval(this.countdownInterval);
+        clearInterval(this.refreshInterval);
+        clearInterval(this.livesCounterInterval);
+
+        // Remove event listeners
+        if (this.handlers) {
+            document.getElementById('refresh-data')?.removeEventListener('click', this.handlers.refresh);
+            document.getElementById('error-refresh-button')?.removeEventListener('click', this.handlers.reload);
+            document.getElementById('share-button')?.removeEventListener('click', this.handlers.share);
+            document.removeEventListener('keydown', this.handlers.keyboard);
+
+            const scrollIndicator = document.querySelector('.scroll-indicator');
+            if (scrollIndicator && this.handlers.scrollToNext) {
+                scrollIndicator.removeEventListener('click', this.handlers.scrollToNext);
+                scrollIndicator.removeEventListener('touchend', this.handlers.scrollToNext);
+                scrollIndicator.removeEventListener('keydown', this.handlers.scrollToNext);
+            }
         }
         
         // Clear data references
@@ -729,7 +730,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Initialize the application
-    window.gazaCrisisApp = new GazaCrisisApp();
+    const app = new GazaCrisisApp();
+    window.gazaCrisisApp = app;
+    window.crisisAnalytics = new CrisisAnalytics(app);
 });
 
 // Cleanup on page unload
